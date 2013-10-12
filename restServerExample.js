@@ -66,11 +66,13 @@ var RestServerExample = function() {
         res.send(fs.readFileSync('index.html','utf-8'));
       });
 
+      //Items
       app.get('/todoItems/all',function(req, res){
         console.log('Requested model todoItems all'.magenta);
         res.send( JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') ) );
       });
 
+      //Create new item
       app.post('/todoItems/new',function(req, res){
         var database = JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') ),
             record, id;
@@ -78,7 +80,7 @@ var RestServerExample = function() {
         if( req.body.data ){
           database[Date.now()] = req.body.data;
         }
-          
+        //persist new record
         fs.writeFileSync( DATABASE_PATH, JSON.stringify( database )  );
         console.log('Saved new record'.magenta);
 
