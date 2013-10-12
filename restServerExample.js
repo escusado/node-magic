@@ -87,6 +87,13 @@ var RestServerExample = function() {
         res.send(  JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') )  );
       });
 
+      //TODO: IMPLEMENT DESTROY hint
+      /*
+        app.get('/todoItems/destroy/:id',function(req, res){
+            console.log('destroy this idem: '+req.params.id);
+        })
+      */
+
       console.log('  -Routes inited!'.cyan);
     }
   };
