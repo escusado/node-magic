@@ -1,0 +1,4 @@
+.todo-list .item .label,
+.todo-list .item .delete{
+	display: inline-block;
+}

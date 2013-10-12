@@ -1,5 +1,5 @@
 var PORT = '3000',
-    DATABASE_PATH = 'users.json';
+    DATABASE_PATH = 'todoData.json';
 
 
 var fs = require('fs'),
@@ -46,11 +46,13 @@ var RestServerExample = function() {
 
     initExpress : function(){
         console.log('Starting express server'.cyan);
+        app.use( express.bodyParser() );
         app.use( app.router );
+        app.use( '/assets', express.static(__dirname + '/assets') );
 
         this.initRoutes();
 
-        app.use( express.bodyParser() );
+
         app.listen(PORT);
         console.log('App ready on port: '.cyan+PORT+' !!!'.cyan);
 
@@ -62,6 +64,25 @@ var RestServerExample = function() {
       //Home
       app.get('/',function(req, res){
         res.send(fs.readFileSync('index.html','utf-8'));
+      });
+
+      app.get('/todoItems/all',function(req, res){
+        console.log('Requested model todoItems all'.magenta);
+        res.send( JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') ) );
+      });
+
+      app.post('/todoItems/new',function(req, res){
+        var database = JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') ),
+            record, id;
+
+        if( req.body.data ){
+          database[Date.now()] = req.body.data;
+        }
+          
+        fs.writeFileSync( DATABASE_PATH, JSON.stringify( database )  );
+        console.log('Saved new record'.magenta);
+
+        res.send(  JSON.parse( fs.readFileSync(DATABASE_PATH,'utf-8') )  );
       });
 
       console.log('  -Routes inited!'.cyan);
